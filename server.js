@@ -1,11 +1,14 @@
 'use strict';
 
 const express = require("express");
-
+const DATABASE_URL = process.env.DATABASE_URL;
 const app = express();
 const dataJson = require("./Movie Data/data.json");
-
 const axios = require("axios");
+const pg = require("pg");
+app.use(express.json());
+
+const client = new pg.Client(DATABASE_URL);
 
 function FormatJsonHandler(id, release_date, title, poster_path, overview) {
     this.id = id;
@@ -45,6 +48,16 @@ app.get('/search', function (req, res) {
             return res.send(result)
         })
 })
+app.post('/addmovietable', function (req, res) {
+    const mov = req.body;
+    //console.log(mov);
+
+    const sql = `INSERT INTO movietable(id,release_date,title,poster_path,overview) VALUES($1,$2,$3,$4) RETURNING *`
+    const values = [mov.id, mov.release_date, mov.title, mov.poster_path, mov.overview]
+    client.query(sql, values).then((result) => {
+        res.status(201).json(result.rows);
+    })
+})
 
 app.get('/trending', function (request, response) {
     let result = [];
@@ -63,7 +76,9 @@ app.get('/trending', function (request, response) {
      return response.send(result)
  */
 })
-
-app.listen(3000, () => {
-    console.log("Listen on 3000");
-})
+client.connect()
+    .then(() => {
+        app.listen(3000, () => {
+            console.log("Listen on 3000");
+        })
+    })
