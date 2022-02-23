@@ -24,6 +24,10 @@ function FormatJsonHandlerReviews(status_code, status_message, success) {
     this.success = success;
 }
 
+app.get('/', function (req, res) {
+    res.send('Welcome to movie Page');
+})
+
 app.get('/reviews', function (req, res) {
     let result = [];
     axios.get("https://api.themoviedb.org/3/movie/{movie_id}/reviews?api_key=f18df13d1aa8af4cbbf8065aae6c1683")
@@ -75,6 +79,33 @@ app.get('/trending', function (request, response) {
      result.push(objJson);
      return response.send(result)
  */
+})
+app.get('/addmovietables/:id', function (request, response) {
+    let id = request.params.id;
+    const sql = `SELECT * FROM movietable WHERE id=$1;`
+    const values = [id];
+    client.query(sql, values).then((result) => {
+        return response.status(200).json(result.rows)
+    })
+})
+
+app.put('/updatemovietables/:id', function (req, res) {
+    const id = req.params.id;
+    const mov = req.body;
+    const sql = `UPDATE movietable SET release_date=$1,title=$2,poster_path=$3,overview=$4 WHERE id=$5 RETURNING *;`
+    const values = [mov.release_date, mov.title, mov.poster_path, mov.overview, id];
+    client.query(sql, values).then((result) => {
+        return res.status(200).json(result.rows)
+    })
+})
+
+app.delete("/deletemovietables/:id", function (req, res) {
+    const id = req.params.id
+    const sql = `DELETE FROM movietable WHERE id=$1;`
+    const values = [id]
+    client.query(sql, values).then(result => {
+        return res.status(204).json({})
+    })
 })
 client.connect()
     .then(() => {

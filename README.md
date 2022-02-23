@@ -2,8 +2,6 @@
 
 ## My name is : Abdulrhman zaher Alqadan
 
-![image](task12json.PNG)
-
 ### A project to create a movie library in order to arrange and line up films
 
 ### What are the steps that a user must take in order to build this app on their own machine and get it running?
@@ -14,4 +12,11 @@
 
 ### What are the features included in you app
 
-#### Facilitate the process of watching and arranging movies
+#### Some things have been added, for example
+
+### now we can CRUD
+
+- CREATE : TO POST
+- READ : TO GET
+- UPDATE : TO PUT
+- DELETE : TO DELET
