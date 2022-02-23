@@ -1,5 +1,5 @@
 'use strict';
-
+require("dotenv").config()
 const express = require("express");
 const DATABASE_URL = process.env.DATABASE_URL;
 const app = express();
@@ -50,13 +50,13 @@ app.get('/search', function (req, res) {
 })
 app.post('/addmovietable', function (req, res) {
     const mov = req.body;
-    //console.log(mov);
+    console.log(mov);
 
-    const sql = `INSERT INTO movietable(id,release_date,title,poster_path,overview) VALUES($1,$2,$3,$4) RETURNING *`
-    const values = [mov.id, mov.release_date, mov.title, mov.poster_path, mov.overview]
+    const sql = `INSERT INTO movietable (release_date,title,poster_path,overview) VALUES ($1,$2,$3,$4)RETURNING *;`
+    const values = [mov.release_date, mov.title, mov.poster_path, mov.overview]
     client.query(sql, values).then((result) => {
         res.status(201).json(result.rows);
-    })
+    });
 })
 
 app.get('/trending', function (request, response) {
