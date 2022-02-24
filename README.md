@@ -8,6 +8,7 @@
 
 - login to browser
 - Go to the web site
+- serch to name of web
 - Create an account
 
 ### What are the features included in you app
