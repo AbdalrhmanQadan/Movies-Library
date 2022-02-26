@@ -1,7 +1,8 @@
 'use strict';
-require("dotenv").config()
+require("dotenv").config();
 const express = require("express");
 const DATABASE_URL = process.env.DATABASE_URL;
+const AbiKey = process.env.APIKEY;
 const app = express();
 const dataJson = require("./Movie Data/data.json");
 const axios = require("axios");
@@ -30,7 +31,7 @@ app.get('/', function (req, res) {
 
 app.get('/reviews', function (req, res) {
     let result = [];
-    axios.get("https://api.themoviedb.org/3/movie/{movie_id}/reviews?api_key=f18df13d1aa8af4cbbf8065aae6c1683")
+    axios.get(`https://api.themoviedb.org/3/movie/{movie_id}/reviews?api_key=${AbiKey}`)
         .then(apirespons => {
             apirespons.data.results.map(value => {
                 let objJson = new FormatJsonHandlerReviews(value.status_code, value.status_message, value.success);
@@ -43,7 +44,7 @@ app.get('/reviews', function (req, res) {
 app.get('/search', function (req, res) {
     let result = [];
 
-    axios.get("https://api.themoviedb.org/3/trending/all/week?api_key=f18df13d1aa8af4cbbf8065aae6c1683")
+    axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${AbiKey}`)
         .then(apirespons => {
             apirespons.data.results.map(value => {
                 let objJson = new FormatJsonHandler(value.id = null, value.title);
@@ -66,7 +67,7 @@ app.post('/addmovietable', function (req, res) {
 app.get('/trending', function (request, response) {
     let result = [];
 
-    axios.get("https://api.themoviedb.org/3/trending/all/week?api_key=f18df13d1aa8af4cbbf8065aae6c1683")
+    axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${AbiKey}`)
         .then(apirespons => {
             apirespons.data.results.map(value => {
                 let objJson = new FormatJsonHandler(value.id, value.release_date, value.title, value.poster_path, value.overview);
