@@ -1,6 +1,7 @@
 'use strict';
 require("dotenv").config()
 const express = require("express");
+const cors = require("cors");
 const DATABASE_URL = process.env.DATABASE_URL;
 const ApiKey = process.env.APIKEY;
 const PORT = process.env.PORT;
@@ -8,13 +9,16 @@ const app = express();
 const dataJson = require("./Movie Data/data.json");
 const axios = require("axios");
 const pg = require("pg");
-app.use(express.json());
 
-//const client = new pg.Client(DATABASE_URL);
-const client = new pg.Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
-});
+app.use(express.json());
+app.use(cors());
+
+const client = new pg.Client(DATABASE_URL);
+
+//const client = new pg.Client({
+//    connectionString: process.env.DATABASE_URL,
+//    ssl: { rejectUnauthorized: false }
+//});
 
 function FormatJsonHandler(id, release_date, title, poster_path, overview) {
     this.id = id;
