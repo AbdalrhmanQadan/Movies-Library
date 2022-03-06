@@ -13,12 +13,12 @@ const pg = require("pg");
 app.use(express.json());
 app.use(cors());
 
-const client = new pg.Client(DATABASE_URL);
+//const client = new pg.Client(DATABASE_URL);
 
-//const client = new pg.Client({
-//    connectionString: process.env.DATABASE_URL,
-//    ssl: { rejectUnauthorized: false }
-//});
+const client = new pg.Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }
+});
 
 function FormatJsonHandler(id, release_date, title, poster_path, overview) {
     this.id = id;
